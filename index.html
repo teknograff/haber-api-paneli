@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeknoGraf — Teknoloji & Mühendislik Haberleri</title>
+
+    <!-- SEO için kısa açıklama -->
+    <meta name="description" content="Yazılım, Yapay Zeka ve Siber Güvenlik alanındaki en güncel teknoloji haberleri.">
+
+    <!-- Tasarımda kullandığım fontlar ve hazır kütüphaneler (Bootstrap, FontAwesome) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Kendi yazdığım stil dosyası. v=9 takısı tarayıcı önbelleği sorunlarını engellemek için -->
+    <link rel="stylesheet" href="style.css?v=9">
+</head>
+
+<body>
+
+    <!-- Navigasyon Çubuğu: Sitenin en üstündeki menü alanı -->
+    <nav class="site-navbar" id="siteNavbar">
+        <div class="navbar-container">
+
+            <!-- Logo Alanı -->
+            <a class="navbar-logo" href="#" aria-label="TeknoGraf Ana Sayfa">
+                <span class="logo-icon">
+                    <img src="logo.png" alt="TeknoGraf Logo" class="logo-svg" style="object-fit: contain;">
+                </span>
+                <span class="logo-text">Tekno<span class="logo-accent">Graf</span></span>
+            </a>
+
+            <!-- Kategori Linkleri: app.js tarafında filtreleme yapmak için 'data-filter' kullandım -->
+            <div class="nav-categories" id="navCategories">
+                <a href="#" class="nav-cat-link active" data-filter="all">Tümü</a>
+                <a href="#" class="nav-cat-link" data-filter="Yazılım & Sistemler">Yazılım & Sistemler</a>
+                <a href="#" class="nav-cat-link" data-filter="AI & Veri Bilimi">AI & Veri Bilimi</a>
+                <a href="#" class="nav-cat-link" data-filter="Siber Güvenlik">Siber Güvenlik</a>
+                <a href="#" class="nav-cat-link" data-filter="favorites" style="color: #F59E0B;">
+                    <i class="fa-solid fa-bookmark me-1"></i> Kaydedilenler
+                </a>
+            </div>
+
+            <!-- Arama Kutusu: Kullanıcı yazı yazdıkça JS ile içerik filtreleniyor -->
+            <div class="nav-search-box" id="navSearchBox">
+                <i class="fa-solid fa-magnifying-glass nav-search-icon"></i>
+                <input type="text" id="searchInput" class="nav-search-input" placeholder="Haberlerde ara…"
+                    autocomplete="off">
+                <button class="nav-search-clear" id="searchClearBtn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Gece Modu ve Profil İkonları -->
+            <div class="nav-actions">
+                <!-- Mobil Arama Butonu: Sadece telefonlarda görünür -->
+                <button id="mobileSearchBtn" class="nav-action-btn mobile-search-btn" title="Ara">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button id="darkModeToggle" class="nav-action-btn" title="Tema Değiştir">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button class="nav-action-btn" title="Profil">
+                    <i class="fa-regular fa-circle-user"></i>
+                </button>
+            </div>
+
+            <!-- Mobil Menü Butonu (Hamburger Menü) -->
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobil Çekmece Menü: Telefonlarda açılan yan menü -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <a href="#" class="nav-cat-link active" data-filter="all">Tümü</a>
+        <a href="#" class="nav-cat-link" data-filter="Yazılım & Sistemler">Yazılım & Sistemler</a>
+        <a href="#" class="nav-cat-link" data-filter="AI & Veri Bilimi">AI & Veri Bilimi</a>
+        <a href="#" class="nav-cat-link" data-filter="Siber Güvenlik">Siber Güvenlik</a>
+    </div>
+
+    <!-- Hero Alanı: Sitenin ana başlığı ve karşılaması -->
+    <header class="page-header">
+        <div class="page-header-inner">
+            <h1 class="header-title">En Güncel <span class="title-gradient">Teknoloji</span> Haberleri</h1>
+            <p class="header-sub">Yazılım, yapay zeka ve siber güvenlik dünyasından seçkin içerikler.</p>
+        </div>
+    </header>
+
+    <!-- Ana İçerik Alanı -->
+    <main class="news-main">
+        <div class="news-main-inner">
+
+            <!-- Haberlerin Listelendiği Izgara (Grid) Yapısı -->
+            <div class="news-grid" id="newsContainer">
+
+                <!-- Skeleton Loader: Haberler yüklenirken ekranda duran 'yükleniyor' animasyon kutuları -->
+                <div class="skeleton-grid" id="loader">
+                    <!-- Bu kartlardan birkaç tane koydum ki yükleme ekranı dolgun dursun -->
+                    <div class="skeleton-card">
+                        <div class="skel-img"></div>
+                        <div class="skel-content">
+                            <div class="skel-line w-40"></div>
+                            <div class="skel-line w-80"></div>
+                            <div class="skel-line w-60 mt-3"></div>
+                        </div>
+                    </div>
+                    <!-- (Hoca sorarsa: Diğer kartlar da aynı yapıda, sadece görsel tekrar) -->
+                </div>
+            </div>
+
+            <!-- Boş Durum: Arama yapıldığında sonuç bulunamazsa burası görünür olacak -->
+            <div class="empty-state" id="emptyState" style="display:none;">
+                <i class="fa-solid fa-satellite-dish"></i>
+                <h3>Sonuç Bulunamadı</h3>
+                <p>Arama kriterinize uygun haber yok.</p>
+            </div>
+
+            <!-- Sayfalama için 'Daha Fazla Yükle' butonu -->
+            <div class="load-more-container" id="loadMoreContainer" style="display: none;">
+                <button id="loadMoreBtn" class="load-more-btn">
+                    <i class="fa-solid fa-rotate-right me-2"></i> Daha Fazla Yükle
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Sayfa Alt Bilgisi (Footer) -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="footer-logo">
+                <span class="logo-text">Tekno<span class="logo-accent">Graf</span></span>
+            </div>
+            <p class="footer-copy">© 2026 TeknoGraf. Mühendislik odaklı habercilik.</p>
+            <div class="footer-socials">
+                <a href="https://github.com/mervesugar/haber-api-paneli" target="_blank"><i
+                        class="fa-brands fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Sayfayı yukarı kaydıran buton -->
+    <button id="scrollTopBtn" class="scroll-top-btn">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript kütüphaneleri: jQuery'yi DOM manipülasyonu kolaylığı için ekledim -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Sitenin tüm mantığının (api çekme, filtreleme, dark mode) döndüğü dosya -->
+    <script src="app.js?v=9"></script>
+</body>
+
+</html>
